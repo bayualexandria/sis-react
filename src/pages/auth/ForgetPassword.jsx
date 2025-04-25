@@ -46,10 +46,10 @@ function ForgetPassword() {
 
             if (response.status === 403) {
                 setMessage(response.message.email);
-                setTimeout(() => {
+                setLoading(false);
+                return setTimeout(() => {
                     setMessage("");
                 }, 5000);
-                setLoading(false);
               
             }
             setLoading(false);
