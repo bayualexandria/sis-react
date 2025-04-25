@@ -44,7 +44,7 @@ function ForgetPassword() {
                 },
             }).then((res) => res.json());
 
-            if (response.status === 403) {
+            if (response.status === 401) {
                 setMessage(response.message.email);
                 setLoading(false);
                 return setTimeout(() => {
@@ -52,6 +52,13 @@ function ForgetPassword() {
                 }, 5000);
               
             }
+             if (response.status === 403) {
+               setLoading(false);
+               return await templateModal.fire({
+                 icon: "error",
+                 title: `${response.message}`,
+               });
+             }
             setLoading(false);
             return await templateModal.fire({
                 icon: "success",
