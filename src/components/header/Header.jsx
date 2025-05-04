@@ -45,13 +45,26 @@ function Header() {
     const token = data.split(",");
 
     try {
-      let response = await fetch(`${repositori}user/${token[1]}/guru`, {
+      let responseLoad = await fetch(`${repositori}user/${token[1]}/guru`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token[0],
         },
         method: "GET",
-      }).then((res) => res.json());
+      });
+      console.log(responseLoad);
+
+      if (responseLoad.status === 503) {
+        templateModalNotif.fire({
+          icon: "error",
+          title: `Server Down! Sistem API dalam perbaikan`,
+        });
+        setTimeout(() => {
+          Cookies.remove("authentication");
+          return window.location.replace("/login");
+        }, 4000);
+      }
+      let response = await responseLoad.json();
       setDataUser(response.data);
     } catch (e) {
       if (e.message === "Failed to fetch") {

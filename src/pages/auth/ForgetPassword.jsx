@@ -36,13 +36,21 @@ function ForgetPassword() {
             },
         });
         try {
-            const response = await fetch(`${repositori}auth/forgot-password`, {
+            const responseLoad = await fetch(`${repositori}auth/forgot-password`, {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
                     "Content-Type": "application/json",
                 },
-            }).then((res) => res.json());
+            });
+            if (responseLoad.status === 503) {
+              setLoading(false);
+              return templateModal.fire({
+                icon: "error",
+                title: `Server Down! Sistem API dalam perbaikan`,
+              });
+            }
+            let response = await responseLoad.json();
 
             if (response.status === 401) {
                 setMessage(response.message.email);
@@ -65,6 +73,7 @@ function ForgetPassword() {
                 title: `${response.message}`,
             });
         } catch (e) {
+           setLoading(false);
            if (e.message === "Failed to fetch") {
              return templateModal.fire({
                icon: "error",

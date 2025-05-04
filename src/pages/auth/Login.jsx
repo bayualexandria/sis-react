@@ -42,14 +42,21 @@ function Login() {
 
     setLoading(true);
     try {
-      let response = await fetch(`${repositori}auth/login-admin`, {
+      let responseLoad = await fetch(`${repositori}auth/login-admin`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
         },
-      }).then((res) => res.json());
-
+      });
+      if (responseLoad.status === 503) {
+        setLoading(false);
+        return templateModal.fire({
+          icon: "error",
+          title: `Server Down! Sistem API dalam perbaikan`,
+        });
+      }
+      let response = await responseLoad.json();
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
