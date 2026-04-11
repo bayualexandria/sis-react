@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import logoGoogle from "../../assets/images/logo-google.png";
 import repositori from "../../utils/repositories";
 import Cookies from "js-cookie";
@@ -33,7 +33,6 @@ function LoginViaSocialMedia() {
 
   const onSuccess = async (credentialResponse) => {
     const user = jwtDecode(credentialResponse.credential);
-    console.log("User", user);
     const email = user.email;
     const idGoogle = user.sub;
     const nameGoogle = user.name;
@@ -46,7 +45,7 @@ function LoginViaSocialMedia() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (responseLoad.status === 503) {
         setLoading(false);
@@ -56,7 +55,6 @@ function LoginViaSocialMedia() {
         });
       }
       let response = await responseLoad.json();
-      console.log("Response", response);
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -77,7 +75,7 @@ function LoginViaSocialMedia() {
               response.accessToken,
               response.user.username,
               response.user.status_id,
-            ]
+            ],
             // {
             //   expires: date,
             // }
@@ -88,8 +86,7 @@ function LoginViaSocialMedia() {
         return response;
       }, 900);
     } catch (error) {
-      console.error("Error during login:", error);
-      console.log("error social", "error");
+      return error;
       // Handle error appropriately, e.g., show a notification or redirect
     }
     // Use the credentialResponse.credential object to access the user's email address.
@@ -100,7 +97,7 @@ function LoginViaSocialMedia() {
       {user && <Navigate to="/" replace={true} />}
       <div className="flex flex-col items-center justify-center">
         <GoogleOAuthProvider
-          clientId="204787363979-snbgjdrfk5fe01pmv980rk794or1057l.apps.googleusercontent.com"
+          clientId="204787363979-fhhfn04ib0sbbl6pfls7v5it4df33atb.apps.googleusercontent.com"
           buttonText=""
         >
           {loading ? (

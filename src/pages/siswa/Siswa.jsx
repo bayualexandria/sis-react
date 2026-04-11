@@ -32,7 +32,7 @@ function Siswa() {
       setUser(response.data);
       setFilter(response.data);
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   };
 

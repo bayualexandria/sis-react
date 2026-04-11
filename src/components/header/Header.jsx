@@ -52,7 +52,6 @@ function Header() {
         },
         method: "GET",
       });
-      console.log(responseLoad);
       if (responseLoad.status === 500) {
         Cookies.remove("authentication");
         return window.location.replace("/login");

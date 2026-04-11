@@ -56,16 +56,14 @@ function AddDataSiswa() {
 
       if (response.status == 403) {
         setLoading(false);
-        console.log(response.message);
         return setError(response.message);
       }
       setTimeout(() => {
         setLoading(false);
         return (window.location.href = "/siswa");
       }, 3000);
-      console.log(response);
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   };
 

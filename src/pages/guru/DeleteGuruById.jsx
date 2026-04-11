@@ -55,7 +55,6 @@ function DeleteGuruById({ username }) {
                         setTimeout(async () => {
                             const data = Cookies.get("authentication");
                             const token = data.split(",");
-                            console.log(token[0]);
                             await fetch(`${repositori}guru/${username}`, {
                                 method: "DELETE",
                                 headers: {
@@ -67,7 +66,7 @@ function DeleteGuruById({ username }) {
                         }, 500);
                     }
                 } catch (e) {
-                    console.log(e.message);
+                    return e;
                 }
                 return true;
             });

@@ -31,7 +31,6 @@ function Guru() {
           },
         })
         .then((res) => res.data);
-      console.log(response.data);
       setFilter(response.data);
       setGuru(response.data);
     } catch (error) {}

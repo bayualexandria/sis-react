@@ -49,7 +49,6 @@ function Login() {
           "Content-Type": "application/json",
         },
       });
-      console.log(responseLoad);
       if (responseLoad.status === 503) {
         setLoading(false);
         return templateModal.fire({
@@ -58,7 +57,7 @@ function Login() {
         });
       }
       let response = await responseLoad.json();
-      
+
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -84,12 +83,12 @@ function Login() {
               response.accessToken,
               response.user.username,
               response.user.status_id,
-            ]
+            ],
             // {
             //   expires: date,
             // }
           );
-          setuser(username);
+          setuser(response.user.username);
         }
 
         return response;
@@ -136,12 +135,12 @@ function Login() {
                 id="username"
                 onChange={(e) => setUsername(e.target.value)}
                 className={`${
-                  message.Username ? "border-rose-500" : "border-sky-500"
+                  message.username ? "border-rose-500" : "border-sky-500"
                 } border  rounded-md shadow-md p-2 text-sm outline-none`}
               />
               <div>
-                {message.Username ? (
-                  <p className="text-red-500 text-xs">{message.Username}</p>
+                {message.username ? (
+                  <p className="text-red-500 text-xs">{message.username}</p>
                 ) : (
                   ""
                 )}
