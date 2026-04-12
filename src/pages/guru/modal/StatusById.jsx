@@ -60,6 +60,7 @@ function StatusById({ row, dataGuru }) {
           },
         })
         .then((res) => res.data);
+      console.log(response);
       if (response.status === 200) {
         templateModalSuccess.fire({
           icon: "success",
