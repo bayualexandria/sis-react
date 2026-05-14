@@ -10,6 +10,7 @@ import DeleteGuruById from "./DeleteGuruById";
 import ShowDataTrashGuru from "./trash-data/ShowDataTrashGuru";
 import ExcelExport from "../../components/laporan/excel/ExcelExport";
 import StatusById from "./modal/StatusById";
+import StatusUserVerified from "./modal/StatusUserVerified";
 
 function Guru() {
   const [guru, setGuru] = useState([]);
@@ -28,7 +29,6 @@ function Guru() {
           },
         })
         .then((res) => res.data);
-      console.log(response.data);
       setFilter(response.data);
       setGuru(response.data);
     } catch (error) {}
@@ -66,6 +66,11 @@ function Guru() {
         {
           name: "Status",
           selector: (row) => <StatusById row={row} dataGuru={dataGuru} />,
+          sortable: true,
+        },
+        {
+          name: "User Status",
+          selector: (row) => <StatusUserVerified row={row} dataGuru={dataGuru} />,
           sortable: true,
         },
         {

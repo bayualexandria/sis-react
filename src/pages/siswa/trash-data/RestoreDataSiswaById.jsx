@@ -55,8 +55,8 @@ function RestoreDataSiswaById({ nis }) {
                         setTimeout(async () => {
                             const data = Cookies.get("authentication");
                             const token = data.split(",");
-                            console.log(token[0]);
-                           const response= await fetch(`${repositori}siswa/restore/${nis}`, {
+                            
+                           await fetch(`${repositori}siswa/restore/${nis}`, {
                                 method: "GET",
                                 headers: {
                                     "Content-Type": "application/json",
@@ -67,7 +67,7 @@ function RestoreDataSiswaById({ nis }) {
                         }, 500);
                     }
                 } catch (e) {
-                    console.log(e.message);
+                    return e;
                 }
                 return true;
             });

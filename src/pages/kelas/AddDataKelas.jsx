@@ -72,7 +72,7 @@ function AddDataKelas(props) {
 
   const getDataGuru = async () => {
     try {
-      let response = await fetch(`${repositori}guru`, {
+      let response = await fetch(`${repositori}guru/status-wali-kelas`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

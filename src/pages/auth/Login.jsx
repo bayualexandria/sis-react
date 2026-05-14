@@ -41,35 +41,58 @@ function Login() {
 
     setLoading(true);
     try {
-      const response = await axios
-        .post(
-          `${repositori}auth/login-admin`,
-          {
-            username: username,
-            password: password,
-          },
-          {
-            withCredentials: true,
-          },
-        )
-        .then((res) => res.data);
-      setLoading(false);
-
-      if (response.status === 200) {
-        var date = new Date();
-        date.setTime(date.getTime() + 60 * 60 * 1000);
-        localStorage.setItem(
-          "username",
-          JSON.stringify(response.user.username),
-        );
-        localStorage.setItem(
-          "id_user",
-          JSON.stringify(response.user.status_id),
-        );
-        localStorage.setItem("is_logged_in", true);
-        setuser(username);
+      let responseLoad = await fetch(`${repositori}auth/login-admin`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(responseLoad);
+      if (responseLoad.status === 503) {
+        setLoading(false);
+        return templateModal.fire({
+          icon: "error",
+          title: `Server Down! Sistem API dalam perbaikan`,
+        });
       }
-      return response;
+      let response = await responseLoad.json();
+      
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        if (response.status === 401) {
+          setMessage(response.message);
+          setTimeout(() => {
+            return setMessage("");
+          }, 8000);
+        }
+        if (response.status === 403) {
+          return templateModal.fire({
+            icon: "error",
+            title: `${response.message}`,
+          });
+        }
+
+        if (response.status === 200) {
+          var date = new Date();
+          date.setTime(date.getTime() + 60 * 60 * 1000);
+          Cookies.set(
+            "authentication",
+            [
+              response.accessToken,
+              response.user.username,
+              response.user.status_id,
+            ]
+            // {
+            //   expires: date,
+            // }
+          );
+          setuser(username);
+        }
+
+        return response;
+      }, 900);
     } catch (e) {
       setLoading(false);
 

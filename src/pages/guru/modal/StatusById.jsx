@@ -68,7 +68,6 @@ function StatusById({ row, dataGuru }) {
       }
     } catch (error) {
       setError(error.response.data.message);
-      console.log("erorrs", error.response.data.message);
     }
   };
 
@@ -83,8 +82,8 @@ function StatusById({ row, dataGuru }) {
             row.status === "Admin"
               ? "bg-blue-500"
               : row.status === "Wali Kelas"
-              ? "bg-orange-500"
-              : "bg-lime-500"
+                ? "bg-orange-500"
+                : "bg-lime-500"
           } rounded-full px-2 py-1 text-white border shadow-md flex justify-center items-center text-xs`}
         >
           {row.status}

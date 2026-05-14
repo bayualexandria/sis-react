@@ -76,7 +76,6 @@ function AddDataSiswa(props) {
 
         },
       }).then((res) => res.json());
-      console.log(response.status);
       if (response.status === 401) {
         setTimeout(() => {
           setloading(false);
@@ -104,9 +103,8 @@ function AddDataSiswa(props) {
           setTimeout(() => props.dataGuru(), 1000);
         }, 1000);
       }
-      console.log(response, "guru");
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   };
 
