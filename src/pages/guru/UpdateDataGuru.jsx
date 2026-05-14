@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Main from "../../components/Main/Main";
-
+import Cookies from "js-cookie";
 import axios from "axios";
 import repositori from "../../utils/repositories";
 import repoimages from "../../utils/repoimages";

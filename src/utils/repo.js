@@ -1,2 +1,2 @@
-const repo = "http://127.0.0.1:8000/";
+const repo = "http://localhost:8080/";
 export default repo;

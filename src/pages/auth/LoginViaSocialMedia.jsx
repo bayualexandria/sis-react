@@ -44,8 +44,10 @@ function LoginViaSocialMedia() {
           {
             withCredentials: true,
           },
+
         )
         .then((res) => res.data);
+
 
       setLoading(true);
       setTimeout(() => {
@@ -54,9 +56,11 @@ function LoginViaSocialMedia() {
         if (response.status === 200) {
           var date = new Date();
           date.setTime(date.getTime() + 60 * 60 * 1000);
+
           localStorage.setItem(
             "username",
             JSON.stringify(response.user.username),
+
           );
           localStorage.setItem(
             "id_user",
@@ -69,6 +73,7 @@ function LoginViaSocialMedia() {
         return response;
       }, 900);
     } catch (error) {
+
       if (error.response.data.status === 403) {
         return templateModal.fire({
           icon: "error",
@@ -77,6 +82,8 @@ function LoginViaSocialMedia() {
       }
       console.error("Error during login:", error);
       console.log("error social", "error");
+
+
       // Handle error appropriately, e.g., show a notification or redirect
     }
     // Use the credentialResponse.credential object to access the user's email address.

@@ -46,16 +46,18 @@ function Header() {
     const username = JSON.parse(dataUser);
 
     try {
-      let responseLoad = await fetch(`${repositori}user/${token[1]}/guru`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token[0],
-        },
-        method: "GET",
-      });
-      console.log(responseLoad);
-      if (responseLoad.status === 500) {
-        Cookies.remove("authentication");
+
+      let response = await axios
+        .get(`${repositori}user/${username}/guru`, {
+          withCredentials: true,
+        })
+        .then((res) => res.data.data);
+
+      if (response.status === 500) {
+        localStorage.removeItem("username");
+        localStorage.removeItem("id_user");
+        localStorage.removeItem("is_logged_in");
+
         return window.location.replace("/login");
       }
       if (response.status === 503) {
