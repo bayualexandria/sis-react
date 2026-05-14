@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Cookies from "js-cookie";
+
 import repositori from "../../../utils/repositories";
 import { Modal } from "@mui/material";
 import Swal from "sweetalert2";
@@ -65,8 +65,7 @@ function AddDataSiswa(props) {
   const saveGuru = async (e) => {
     setloading(true);
     e.preventDefault();
-    const dataToken = Cookies.get("authentication");
-    const token = dataToken.split(",");
+  
 
     try {
       let response = await fetch(`${repositori}guru`, {
@@ -74,7 +73,7 @@ function AddDataSiswa(props) {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token[0],
+
         },
       }).then((res) => res.json());
       console.log(response.status);

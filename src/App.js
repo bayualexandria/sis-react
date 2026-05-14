@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import Cookies from "js-cookie";
+
 import {
   Home,
   Login,
@@ -17,7 +17,6 @@ import {
   KelasById,
 } from "./pages/Index";
 import PageNotFound from "./pages/404/PageNotFound";
-
 
 function App() {
   return (
@@ -162,19 +161,21 @@ function App() {
 }
 
 function PrivateRoute({ children }) {
-  const cookieAuth = Cookies.get("authentication");
-  if (cookieAuth) {
+  // "is_logged_in" adalah cookie biasa yang diizinkan dibaca JS
+  const isLoggedIn = localStorage.getItem("is_logged_in");
+
+  if (isLoggedIn === "true") {
     return children;
   }
   return <Navigate to="/login" replace={true} />;
 }
 
 function UnAthenticated({ children }) {
-  const cookieAuth = Cookies.get("authentication");
-  if (!cookieAuth) {
+  const isLoggedIn = localStorage.getItem("is_logged_in");
+
+  if (isLoggedIn !== "true") {
     return children;
   }
   return <Navigate to="/" replace={true} />;
 }
-
 export default App;

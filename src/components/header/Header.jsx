@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
-import Cookies from "js-cookie";
+
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import repositori from "../../utils/repositories";
 import repoimages from "../../utils/repoimages";
 import ChangePassword from "../../pages/profile/ChangePassword";
+import axios from "axios";
 
 const templateModal = withReactContent(Swal).mixin({
   customClass: {
@@ -37,40 +38,42 @@ const templateModalNotif = withReactContent(Swal).mixin({
 
 function Header() {
   const [show, setShow] = useState(false);
-  const [user, setUser] = useState(Cookies.get("authentication"));
+  const [user, setUser] = useState(localStorage.getItem("username"));
   const [dataUser, setDataUser] = useState([]);
 
   const showUser = async () => {
-    const data = Cookies.get("authentication");
-    const token = data.split(",");
+    const dataUser = localStorage.getItem("username");
+    const username = JSON.parse(dataUser);
 
     try {
-      let responseLoad = await fetch(`${repositori}user/${token[1]}/guru`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token[0],
-        },
-        method: "GET",
-      });
-      console.log(responseLoad);
-      if (responseLoad.status === 500) {
-        Cookies.remove("authentication");
+      let response = await axios
+        .get(`${repositori}user/${username}/guru`, {
+          withCredentials: true,
+        })
+        .then((res) => res.data.data);
+
+      if (response.status === 500) {
+        localStorage.removeItem("username");
+        localStorage.removeItem("id_user");
+        localStorage.removeItem("is_logged_in");
         return window.location.replace("/login");
       }
-      if (responseLoad.status === 503) {
+      if (response.status === 503) {
         templateModalNotif.fire({
           icon: "error",
           title: `Server Down! Sistem API dalam perbaikan`,
         });
         setTimeout(() => {
-          Cookies.remove("authentication");
+          localStorage.removeItem("username");
+          localStorage.removeItem("id_user");
+          localStorage.removeItem("is_logged_in");
           return window.location.replace("/login");
         }, 4000);
       }
 
-      let response = await responseLoad.json();
-      setDataUser(response.data);
+      setDataUser(response);
     } catch (e) {
+      console.log(e.response.data);
       if (e.message === "Failed to fetch") {
         return templateModalNotif.fire({
           icon: "error",
@@ -83,7 +86,7 @@ function Header() {
 
   useEffect(() => {
     showUser();
-  });
+  }, []);
 
   const popUpLogoutButton = async () => {
     await templateModal
@@ -98,17 +101,17 @@ function Header() {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          const data = Cookies.get("authentication");
-          const auth = data.split(",");
-
-          await fetch(`${repositori}logout`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + auth[0],
+          await axios.post(
+            `${repositori}logout`,
+            {},
+            {
+              withCredentials: true,
             },
-          });
-          setUser(Cookies.remove("authentication"));
+          );
+          setUser(localStorage.removeItem("username"));
+          localStorage.removeItem("username");
+          localStorage.removeItem("id_user");
+          localStorage.removeItem("is_logged_in");
           return <Navigate to="/login" replace={true} />;
         }
         return true;
@@ -162,7 +165,7 @@ function Header() {
             dataUser.status_id == 3 ? (
               <div className="w-9 h-9 rounded-full shadow-md  p-2 flex justify-center items-center border border-slate-200 overflow-hidden">
                 <img
-                  src={repoimages + dataUser.guru.image_profile}
+                  src={repoimages + dataUser.image_profile}
                   alt="profile"
                   className="w-full"
                 />

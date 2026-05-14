@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Main from "../../components/Main/Main";
-import Cookies from "js-cookie";
+
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
@@ -19,15 +19,12 @@ function Guru() {
   const [filter, setFilter] = useState([]);
 
   const dataGuru = async () => {
-    const dataToken = Cookies.get("authentication");
-    const token = dataToken.split(",");
-
+    
     try {
       const response = await axios
         .get(`${repositori}guru`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token[0],
           },
         })
         .then((res) => res.data);

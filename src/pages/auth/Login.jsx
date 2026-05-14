@@ -1,11 +1,11 @@
 import { useState } from "react";
 import logo from "../../assets/images/logo-pendidikan.png";
 import { Link, Navigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import repositori from "../../utils/repositories";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import LoginViaSocialMedia from "./LoginViaSocialMedia";
+import axios from "axios";
 
 const templateModal = withReactContent(Swal).mixin({
   customClass: {
@@ -34,7 +34,6 @@ function Login() {
   const [message, setMessage] = useState("");
 
   const [user, setuser] = useState(false);
-  const data = { username, password };
 
   const onHandlerSubmit = async (e) => {
     e.preventDefault();
@@ -42,60 +41,50 @@ function Login() {
 
     setLoading(true);
     try {
-      let responseLoad = await fetch(`${repositori}auth/login-admin`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(responseLoad);
-      if (responseLoad.status === 503) {
-        setLoading(false);
-        return templateModal.fire({
-          icon: "error",
-          title: `Server Down! Sistem API dalam perbaikan`,
-        });
+      const response = await axios
+        .post(
+          `${repositori}auth/login-admin`,
+          {
+            username: username,
+            password: password,
+          },
+          {
+            withCredentials: true,
+          },
+        )
+        .then((res) => res.data);
+      setLoading(false);
+
+      if (response.status === 200) {
+        var date = new Date();
+        date.setTime(date.getTime() + 60 * 60 * 1000);
+        localStorage.setItem(
+          "username",
+          JSON.stringify(response.user.username),
+        );
+        localStorage.setItem(
+          "id_user",
+          JSON.stringify(response.user.status_id),
+        );
+        localStorage.setItem("is_logged_in", true);
+        setuser(username);
       }
-      let response = await responseLoad.json();
-      
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        if (response.status === 401) {
-          setMessage(response.message);
-          setTimeout(() => {
-            return setMessage("");
-          }, 8000);
-        }
-        if (response.status === 403) {
-          return templateModal.fire({
-            icon: "error",
-            title: `${response.message}`,
-          });
-        }
-
-        if (response.status === 200) {
-          var date = new Date();
-          date.setTime(date.getTime() + 60 * 60 * 1000);
-          Cookies.set(
-            "authentication",
-            [
-              response.accessToken,
-              response.user.username,
-              response.user.status_id,
-            ]
-            // {
-            //   expires: date,
-            // }
-          );
-          setuser(username);
-        }
-
-        return response;
-      }, 900);
+      return response;
     } catch (e) {
       setLoading(false);
+
+      if (e.response.data.status === 401) {
+        setMessage(e.response.data.message);
+        setTimeout(() => {
+          return setMessage("");
+        }, 8000);
+      }
+      if (e.response.data.status === 403) {
+        return templateModal.fire({
+          icon: "error",
+          title: `${e.response.data.message}`,
+        });
+      }
       if (e.message === "Failed to fetch") {
         return templateModal.fire({
           icon: "error",
@@ -136,12 +125,12 @@ function Login() {
                 id="username"
                 onChange={(e) => setUsername(e.target.value)}
                 className={`${
-                  message.Username ? "border-rose-500" : "border-sky-500"
+                  message.username ? "border-rose-500" : "border-sky-500"
                 } border  rounded-md shadow-md p-2 text-sm outline-none`}
               />
               <div>
-                {message.Username ? (
-                  <p className="text-red-500 text-xs">{message.Username}</p>
+                {message.username ? (
+                  <p className="text-red-500 text-xs">{message.username}</p>
                 ) : (
                   ""
                 )}

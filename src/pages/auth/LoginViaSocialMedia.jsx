@@ -1,12 +1,12 @@
-import  { useState } from "react";
+import { useState } from "react";
 import logoGoogle from "../../assets/images/logo-google.png";
 import repositori from "../../utils/repositories";
-import Cookies from "js-cookie";
 import { Navigate } from "react-router-dom";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const templateModal = withReactContent(Swal).mixin({
   customClass: {
@@ -33,61 +33,48 @@ function LoginViaSocialMedia() {
 
   const onSuccess = async (credentialResponse) => {
     const user = jwtDecode(credentialResponse.credential);
-    console.log("User", user);
     const email = user.email;
     const idGoogle = user.sub;
     const nameGoogle = user.name;
 
     try {
-      let responseLoad = await fetch(
-        `${repositori}login-admin/google/${email}/${idGoogle}/${nameGoogle}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
+      let response = await axios
+        .get(
+          `${repositori}login-admin/google/${email}/${idGoogle}/${nameGoogle}`,
+          {
+            withCredentials: true,
           },
-        }
-      );
-      if (responseLoad.status === 503) {
-        setLoading(false);
-        return templateModal.fire({
-          icon: "error",
-          title: `Server Down! Sistem API dalam perbaikan`,
-        });
-      }
-      let response = await responseLoad.json();
-      console.log("Response", response);
+        )
+        .then((res) => res.data);
+
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-
-        if (response.status === 403) {
-          return templateModal.fire({
-            icon: "error",
-            title: `${response.message}`,
-          });
-        }
-
+        console.log(response.user.username);
         if (response.status === 200) {
           var date = new Date();
           date.setTime(date.getTime() + 60 * 60 * 1000);
-          Cookies.set(
-            "authentication",
-            [
-              response.accessToken,
-              response.user.username,
-              response.user.status_id,
-            ]
-            // {
-            //   expires: date,
-            // }
+          localStorage.setItem(
+            "username",
+            JSON.stringify(response.user.username),
           );
+          localStorage.setItem(
+            "id_user",
+            JSON.stringify(response.user.status_id),
+          );
+          localStorage.setItem("is_logged_in", true);
           setuser(response.user.username);
         }
 
         return response;
       }, 900);
     } catch (error) {
+      if (error.response.data.status === 403) {
+        return templateModal.fire({
+          icon: "error",
+          title: `${error.response.data.message}`,
+        });
+      }
       console.error("Error during login:", error);
       console.log("error social", "error");
       // Handle error appropriately, e.g., show a notification or redirect
@@ -100,7 +87,7 @@ function LoginViaSocialMedia() {
       {user && <Navigate to="/" replace={true} />}
       <div className="flex flex-col items-center justify-center">
         <GoogleOAuthProvider
-          clientId="204787363979-snbgjdrfk5fe01pmv980rk794or1057l.apps.googleusercontent.com"
+          clientId="204787363979-fhhfn04ib0sbbl6pfls7v5it4df33atb.apps.googleusercontent.com"
           buttonText=""
         >
           {loading ? (

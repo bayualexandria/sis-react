@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import repositori from "../../../utils/repositories";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const style = {
   position: "absolute",
@@ -49,14 +48,12 @@ function StatusById({ row, dataGuru }) {
   const updateStatus = async (e) => {
     e.preventDefault();
     const data = { status };
-    const dataToken = Cookies.get("authentication");
-    const token = dataToken.split(",");
+
     try {
       let response = await axios
         .post(`${repositori}guru/${row.nip}`, data, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token[0],
           },
         })
         .then((res) => res.data);

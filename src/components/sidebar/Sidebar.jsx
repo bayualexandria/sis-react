@@ -1,24 +1,26 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PopUpLogout from "../popup/PopUpLogout";
-import Cookies from "js-cookie";
 import repositori from "../../utils/repositories";
 import repo from "../../utils/repo";
+import axios from "axios";
 
 function Sidebar() {
   const [show, setShow] = useState(false);
   const [dataUser, setDataUser] = useState([]);
   const showUser = async () => {
-    const data = Cookies.get("authentication");
-    const token = data.split(",");
+    const dataUser = localStorage.getItem("username");
+    const username = JSON.parse(dataUser);
     try {
-      let response = await fetch(`${repositori}user/${token[1]}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token[0],
-        },
-        method: "GET",
-      }).then((res) => res.json());
+      let response = await axios
+        .get(`${repositori}user/${username}`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => res.data);
+      console.log("Sidebar", response);
       setDataUser(response.data["status_id"]);
     } catch (error) {}
   };

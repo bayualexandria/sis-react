@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
 import Main from "../components/Main/Main";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 import repositori from "../utils/repositories";
 import Semester from "./semester/Semester";
+import axios from "axios";
 
 function Home() {
   const [guru, setGuru] = useState("");
   const [siswa, setSiswa] = useState("");
   const [loadData, setLoadData] = useState(false);
-  const data = Cookies.get("authentication");
-  const token = data.split(",");
+
   const dataGuru = async () => {
     setLoadData(true);
     try {
-      let response = await fetch(`${repositori}guru`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token[0],
-        },
-      }).then((res) => res.json());
+      let response = await axios
+        .get(`${repositori}guru`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => res.json());
       if (response.status == 200) {
         setLoadData(false);
         setGuru(response.data.length);
@@ -33,13 +33,14 @@ function Home() {
   const dataSiswa = async () => {
     setLoadData(true);
     try {
-      let response = await fetch(`${repositori}siswa`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token[0],
-        },
-      }).then((res) => res.json());
+      let response = await axios
+        .get(`${repositori}siswa`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => res.json());
       if (response.status == 200) {
         setLoadData(false);
         setSiswa(response.data.length);
