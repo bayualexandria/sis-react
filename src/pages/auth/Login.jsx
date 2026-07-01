@@ -1,11 +1,11 @@
 import { useState } from "react";
 import logo from "../../assets/images/logo-pendidikan.png";
 import { Link, Navigate } from "react-router-dom";
-import repositori from "../../utils/repositories";
+
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import LoginViaSocialMedia from "./LoginViaSocialMedia";
-import axios from "axios";
+
 import api from "../../utils/repositories";
 
 const templateModal = withReactContent(Swal).mixin({

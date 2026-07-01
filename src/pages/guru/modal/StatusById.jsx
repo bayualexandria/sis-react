@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Box, Modal } from "@mui/material";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import repositori from "../../../utils/repositories";
-import axios from "axios";
 import api from "../../../utils/repositories";
 
 const style = {

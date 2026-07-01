@@ -155,6 +155,7 @@ function App() {
         }
       />
       {/* End Authorization */}
+  
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
@@ -162,12 +163,9 @@ function App() {
 
 function PrivateRoute({ children }) {
   // "is_logged_in" adalah cookie biasa yang diizinkan dibaca JS
-  const isLoggedIn = localStorage.getItem("is_logged_in");
+  const isLoggedIn = localStorage.getItem("is_logged_in") === "true";
 
-  if (isLoggedIn === "true") {
-    return children;
-  }
-  return <Navigate to="/login" replace={true} />;
+  return isLoggedIn ? children : <Navigate to="/login" replace />;
 }
 
 function UnAthenticated({ children }) {

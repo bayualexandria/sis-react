@@ -99,7 +99,7 @@ function ShowDataTrashGuru() {
             const dataToken = Cookies.get("authentication");
             const token = dataToken.split(",");
             try {
-              const response = await axios
+               await axios
                 .get(`${repositori}guru/restore`, {
                   headers: {
                     "Content-Type": "application/json",
@@ -142,7 +142,7 @@ function ShowDataTrashGuru() {
             const dataToken = Cookies.get("authentication");
             const token = dataToken.split(",");
             try {
-              const response = await fetch(
+               await fetch(
                 `${repositori}guru/delete-permanent`,
                 {
                   method: "DELETE",
@@ -304,7 +304,7 @@ function ShowDataTrashGuru() {
                   </div>
                 </div>
                 <div className="flex flex-row">
-                  {dataTrash == "" ? (
+                  {dataTrash === "" ? (
                     ""
                   ) : (
                     <div className="flex flex-row gap-x-2">

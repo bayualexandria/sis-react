@@ -61,7 +61,7 @@ function Sidebar() {
               <p className="hidden md:block text-sm">Home</p>
             </Link>
           </li>
-          {dataUser == 1 ? (
+          {dataUser === 1 ? (
             <li className="transition duration-300 hover:stroke-2 ">
               <div
                 onClick={showMenu}

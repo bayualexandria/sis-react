@@ -56,6 +56,7 @@ function Header() {
 
         return window.location.replace("/login");
       }
+
       if (response.status === 503) {
         templateModalNotif.fire({
           icon: "error",
@@ -71,13 +72,25 @@ function Header() {
 
       setDataUser(response);
     } catch (e) {
-      console.log(e.response.data);
+      console.log("Header", e.response.data);
       if (e.message === "Failed to fetch") {
         return templateModalNotif.fire({
           icon: "error",
           title:
             "Koneksi ke server terputus! Mohon hubungi pihak administrator server.",
         });
+      }
+      if (e.response.status === 401) {
+        templateModalNotif.fire({
+          icon: "error",
+          title: e.response.data.message,
+        });
+        setTimeout(() => {
+          localStorage.removeItem("username");
+          localStorage.removeItem("id_user");
+          localStorage.removeItem("is_logged_in");
+          return window.location.replace("/login");
+        }, 4000);
       }
     }
   };
@@ -152,9 +165,9 @@ function Header() {
             className="flex items-center gap-x-1 cursor-pointer"
             onClick={showMenu}
           >
-            {dataUser.status_id == 2 ||
-            dataUser.status_id == 1 ||
-            dataUser.status_id == 3 ? (
+            {dataUser.status_id === 2 ||
+            dataUser.status_id === 1 ||
+            dataUser.status_id === 3 ? (
               <div className="w-9 h-9 rounded-full shadow-md  p-2 flex justify-center items-center border border-slate-200 overflow-hidden">
                 <img
                   src={repoimages + dataUser.image_profile}

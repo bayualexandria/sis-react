@@ -9,52 +9,52 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 function UpdateDataGuru() {
-    const { nip } = useParams();
-    const [guru, setGuru] = useState([]);
-    const [imagePreview, setImagePreview] = useState();
-    const [loading, setLoading] = useState(false);
-    const [nama, setNama] = useState("");
-    const [email, setEmail] = useState("");
-    const [jenisKelamin, setJenisKelamin] = useState("");
-    const [noHP, setNoHP] = useState("");
-    const [alamat, setAlamat] = useState("");
-    const [image, setImage] = useState("");
-    const [error, setError] = useState("");
-    const [user, setUser] = useState("");
-    const dataToken = Cookies.get("authentication");
-    const token = dataToken.split(",");
+  const { nip } = useParams();
+  const [guru, setGuru] = useState([]);
+  const [imagePreview, setImagePreview] = useState();
+  const [loading, setLoading] = useState(false);
+  const [nama, setNama] = useState("");
+  const [email, setEmail] = useState("");
+  const [jenisKelamin, setJenisKelamin] = useState("");
+  const [noHP, setNoHP] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [image, setImage] = useState("");
+  const [error, setError] = useState("");
+  const [user, setUser] = useState("");
+  const dataToken = Cookies.get("authentication");
+  const token = dataToken.split(",");
 
-    const getDataGuruById = async () => {
-        try {
-            let response = await axios
-                .get(`${repositori}guru/${nip}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + token[0],
-                    },
-                })
-                .then((res) => res.data);
-            setGuru(response.data);
+  const getDataGuruById = async () => {
+    try {
+      let response = await axios
+        .get(`${repositori}guru/${nip}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token[0],
+          },
+        })
+        .then((res) => res.data);
+      setGuru(response.data);
 
-            console.log(response);
-        } catch (e) {
-            console.log(e.message);
-        }
-    };
+      console.log(response);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
-    const getUserById = async () => {
-        try {
-            let response = await axios
-                .get(`${repositori}user/${nip}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + token[0],
-                    },
-                })
-                .then((res) => res.data);
-            setUser(response.data);
-        } catch (error) {}
-    };
+  const getUserById = async () => {
+    try {
+      let response = await axios
+        .get(`${repositori}user/${nip}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token[0],
+          },
+        })
+        .then((res) => res.data);
+      setUser(response.data);
+    } catch (error) {}
+  };
 
   const updateData = async (e) => {
     e.preventDefault();
@@ -78,43 +78,43 @@ function UpdateDataGuru() {
       },
     });
 
-        const dataToken = Cookies.get("authentication");
-        const token = dataToken.split(",");
-        const data = new FormData();
-        data.append("nama", nama);
-        data.append("jenis_kelamin", jenisKelamin);
-        data.append("no_hp", noHP);
-        data.append("alamat", alamat);
-        data.append("email", email);
-        data.append("image_profile", image);
+    const dataToken = Cookies.get("authentication");
+    const token = dataToken.split(",");
+    const data = new FormData();
+    data.append("nama", nama);
+    data.append("jenis_kelamin", jenisKelamin);
+    data.append("no_hp", noHP);
+    data.append("alamat", alamat);
+    data.append("email", email);
+    data.append("image_profile", image);
 
-        try {
-            let response = await axios
-                .post(`${repositori}guru/${nip}`, data, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: "Bearer " + token[0],
-                    },
-                })
-                .then((res) => res.data);
-            console.log(response);
+    try {
+      let response = await axios
+        .post(`${repositori}guru/${nip}`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token[0],
+          },
+        })
+        .then((res) => res.data);
+      console.log(response);
 
-            if (response.status === 200) {
-                setLoading(false);
-                await templateModal.fire({
-                    icon: "success",
-                    title: "Data berhasil diubah",
-                });
-                setTimeout(async () => {
-                    return (window.location.href = "/guru");
-                }, 5000);
-            }
-        } catch (error) {
-            setLoading(false);
-            setError(error.response.data.message);
-            console.log("erorrs", error.response.data.message);
-        }
-    };
+      if (response.status === 200) {
+        setLoading(false);
+        await templateModal.fire({
+          icon: "success",
+          title: "Data berhasil diubah",
+        });
+        setTimeout(async () => {
+          return (window.location.href = "/guru");
+        }, 5000);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error.response.data.message);
+      console.log("erorrs", error.response.data.message);
+    }
+  };
 
   const onImageUpload = (e) => {
     const file = e.target.files[0];
