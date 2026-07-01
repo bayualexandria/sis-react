@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import repositori from "../../../utils/repositories";
-import axios from "axios";
-import Cookies from "js-cookie";
+import api from "../../../utils/repositories";
 
 const templateModalSuccess = withReactContent(Swal).mixin({
   customClass: {
@@ -26,16 +24,10 @@ const templateModalSuccess = withReactContent(Swal).mixin({
 
 function StatusUserVerified({ row, dataGuru }) {
   const updateEmailVerifiedAtToNull = async () => {
-    const dataToken = Cookies.get("authentication");
-    const token = dataToken.split(",");
+    
     try {
-      let response = await axios
-        .get(`${repositori}user/${row.nip}/update-email-verified`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token[0],
-          },
-        })
+      let response = await api
+        .get(`user/${row.nip}/update-email-verified`)
         .then((res) => res.data);
       if (response.status === 200) {
         templateModalSuccess.fire({
@@ -50,16 +42,10 @@ function StatusUserVerified({ row, dataGuru }) {
   };
 
   const updateEmailVerifiedAt = async () => {
-    const dataToken = Cookies.get("authentication");
-    const token = dataToken.split(",");
+    
     try {
-      let response = await axios
-        .get(`${repositori}user/${row.nip}/update-email-verified-at`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token[0],
-          },
-        })
+      let response = await api
+        .get(`user/${row.nip}/update-email-verified-at`)
         .then((res) => res.data);
       if (response.status === 200) {
         templateModalSuccess.fire({

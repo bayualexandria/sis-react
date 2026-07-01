@@ -3,10 +3,9 @@ import { Link, Navigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import repositori from "../../utils/repositories";
+import api from "../../utils/repositories";
 import repoimages from "../../utils/repoimages";
 import ChangePassword from "../../pages/profile/ChangePassword";
-import axios from "axios";
 
 const templateModal = withReactContent(Swal).mixin({
   customClass: {
@@ -46,11 +45,8 @@ function Header() {
     const username = JSON.parse(dataUser);
 
     try {
-
-      let response = await axios
-        .get(`${repositori}user/${username}/guru`, {
-          withCredentials: true,
-        })
+      let response = await api
+        .get(`/user/${username}/guru`)
         .then((res) => res.data.data);
 
       if (response.status === 500) {
@@ -103,13 +99,7 @@ function Header() {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          await axios.post(
-            `${repositori}logout`,
-            {},
-            {
-              withCredentials: true,
-            },
-          );
+          await api.post("/logout");
           setUser(localStorage.removeItem("username"));
           localStorage.removeItem("username");
           localStorage.removeItem("id_user");

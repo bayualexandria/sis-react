@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Main from "../components/Main/Main";
 import { Link } from "react-router-dom";
-import repositori from "../utils/repositories";
+import api from "../utils/repositories";
 import Semester from "./semester/Semester";
-import axios from "axios";
 
 function Home() {
   const [guru, setGuru] = useState("");
@@ -13,40 +12,26 @@ function Home() {
   const dataGuru = async () => {
     setLoadData(true);
     try {
-      let response = await axios
-        .get(`${repositori}guru`, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => res.json());
+      let response = await api.get("guru/");
       if (response.status == 200) {
         setLoadData(false);
-        setGuru(response.data.length);
+        setGuru(response.data.data.length);
       }
     } catch (error) {
-      console.log(error);
+      console.log("guru", error);
     }
   };
 
   const dataSiswa = async () => {
     setLoadData(true);
     try {
-      let response = await axios
-        .get(`${repositori}siswa`, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => res.json());
+      let response = await api.get("siswa/");
       if (response.status == 200) {
         setLoadData(false);
-        setSiswa(response.data.length);
+        setSiswa(response.data.data.length);
       }
     } catch (error) {
-      console.log(error);
+      console.log("error siswa", error);
     }
   };
 

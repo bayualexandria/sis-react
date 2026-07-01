@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import repositori from "../../../utils/repositories";
 import axios from "axios";
+import api from "../../../utils/repositories";
 
 const style = {
   position: "absolute",
@@ -50,8 +51,8 @@ function StatusById({ row, dataGuru }) {
     const data = { status };
 
     try {
-      let response = await axios
-        .post(`${repositori}guru/${row.nip}`, data, {
+      let response = await api
+        .post(`guru/${row.nip}`, data, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -79,14 +80,14 @@ function StatusById({ row, dataGuru }) {
       >
         <span
           className={`${
-            row.status === "Admin"
+            row.status_user_name === "Admin"
               ? "bg-blue-500"
-              : row.status === "Wali Kelas"
+              : row.status_user_name === "Wali Kelas"
                 ? "bg-orange-500"
                 : "bg-lime-500"
           } rounded-full px-2 py-1 text-white border shadow-md flex justify-center items-center text-xs`}
         >
-          {row.status}
+          {row.status_user_name}
         </span>
       </div>
       <Modal

@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import LoginViaSocialMedia from "./LoginViaSocialMedia";
 import axios from "axios";
+import api from "../../utils/repositories";
 
 const templateModal = withReactContent(Swal).mixin({
   customClass: {
@@ -41,10 +42,9 @@ function Login() {
 
     setLoading(true);
     try {
-
-      const response = await axios
+      const response = await api
         .post(
-          `${repositori}auth/login-admin`,
+          "auth/login-admin",
           {
             username: username,
             password: password,
@@ -59,10 +59,7 @@ function Login() {
       if (response.status === 200) {
         var date = new Date();
         date.setTime(date.getTime() + 60 * 60 * 1000);
-        localStorage.setItem(
-          "username",
-          JSON.stringify(response.user.username),
-        );
+        localStorage.setItem("username", JSON.stringify(username));
         localStorage.setItem(
           "id_user",
           JSON.stringify(response.user.status_id),
@@ -71,7 +68,6 @@ function Login() {
         setuser(username);
       }
       return response;
-
     } catch (e) {
       setLoading(false);
 

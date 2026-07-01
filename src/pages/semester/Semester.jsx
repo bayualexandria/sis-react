@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import repositori from "../../utils/repositories";
 import axios from "axios";
-import Cookies from "js-cookie";
 import DeleteSemesterById from "./DeleteSemesterById";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import api from "../../utils/repositories";
 
 const style = {
   position: "absolute",
@@ -52,11 +52,7 @@ function Semester() {
   // Get data Semester
   const dataSemester = async () => {
     try {
-      let response = await axios
-        .get(`${repositori}semester`, {
-          withCredentials: true,
-        })
-        .then((res) => res.data);
+      let response = await api.get("semester").then((res) => res.data.data);
       setFilter(response.data);
       setSemester(response.data);
       console.log(response.data);
@@ -92,7 +88,7 @@ function Semester() {
       },
     });
     try {
-      let response = await axios.post(`${repositori}semester`, dataInput, {
+      let response = await api.post(`semester`, dataInput, {
         withCredentials: true,
       });
       console.log(response);

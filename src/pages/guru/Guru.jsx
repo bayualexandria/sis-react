@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import Main from "../../components/Main/Main";
 
-import axios from "axios";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
-import repositori from "../../utils/repositories";
 import AddDataGuru from "./modal/AddDataGuru";
 import DeleteGuruById from "./DeleteGuruById";
 import ShowDataTrashGuru from "./trash-data/ShowDataTrashGuru";
 import ExcelExport from "../../components/laporan/excel/ExcelExport";
 import StatusById from "./modal/StatusById";
 import StatusUserVerified from "./modal/StatusUserVerified";
+import api from "../../utils/repositories";
 
 function Guru() {
   const [guru, setGuru] = useState([]);
@@ -20,17 +19,11 @@ function Guru() {
   const [filter, setFilter] = useState([]);
 
   const dataGuru = async () => {
-    
     try {
-      const response = await axios
-        .get(`${repositori}guru`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => res.data);
-      setFilter(response.data);
-      setGuru(response.data);
+      const response = await api.get("/guru/").then((res) => res.data.data);
+      console.log(response);
+      setFilter(response);
+      setGuru(response);
     } catch (error) {}
   };
 
@@ -40,7 +33,7 @@ function Guru() {
       setColumns([
         {
           name: "Nama Lengkap",
-          selector: (row) => row.nama,
+          selector: (row) => row.name,
           sortable: true,
         },
         {
@@ -70,7 +63,9 @@ function Guru() {
         },
         {
           name: "User Status",
-          selector: (row) => <StatusUserVerified row={row} dataGuru={dataGuru} />,
+          selector: (row) => (
+            <StatusUserVerified row={row} dataGuru={dataGuru} />
+          ),
           sortable: true,
         },
         {
@@ -109,8 +104,9 @@ function Guru() {
   useEffect(() => {
     const result = guru.filter((item) => {
       return (
-        item.nama.toLowerCase().match(search.toLowerCase()) ||
-        item.nip.toLowerCase().match(search.toLowerCase()) ||
+        item.name.toLowerCase().match(search.toLowerCase()) ||
+        // buat nip menjadi string
+        item.nip.toString().toLowerCase().match(search.toLowerCase()) ||
         item.jenis_kelamin.toLowerCase().match(search.toLowerCase()) ||
         item.no_hp.toLowerCase().match(search.toLowerCase()) ||
         item.alamat.toLowerCase().match(search.toLowerCase())
@@ -166,8 +162,8 @@ function Guru() {
                       </div>
                       <div className="flex flex-row gap-x-3">
                         <AddDataGuru dataGuru={dataGuru} />
-                        <ExcelExport data={guru} fileName="Data Guru" />
-                        <ShowDataTrashGuru />
+                        {/* <ExcelExport data={guru} fileName="Data Guru" /> */}
+                        {/* <ShowDataTrashGuru /> */}
                       </div>
                     </div>
                   }

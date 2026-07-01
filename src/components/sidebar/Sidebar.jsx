@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PopUpLogout from "../popup/PopUpLogout";
-import repositori from "../../utils/repositories";
 import repo from "../../utils/repo";
-import axios from "axios";
+import api from "../../utils/repositories";
 
 function Sidebar() {
   const [show, setShow] = useState(false);
@@ -12,16 +11,10 @@ function Sidebar() {
     const dataUser = localStorage.getItem("username");
     const username = JSON.parse(dataUser);
     try {
-      let response = await axios
-        .get(`${repositori}user/${username}`, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => res.data);
-      console.log("Sidebar", response);
-      setDataUser(response.data["status_id"]);
+      let response = await api
+        .get(`user/${username}/guru`)
+        .then((res) => res.data.data);
+      setDataUser(response["status_id"]);
     } catch (error) {}
   };
 
