@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logo from "../../assets/images/logo-pendidikan.png";
 import { Link, Navigate } from "react-router-dom";
-
+import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import LoginViaSocialMedia from "./LoginViaSocialMedia";
@@ -204,7 +204,7 @@ function Login() {
                 )}
               </div>
             </div>
-
+            <ReCAPTCHA sitekey="6Ld1Kz8tAAAAAPwlu1XZVPrc0MDG0L8mwTupRgf8" />
             <button
               type="submit"
               className="rounded-full outline-none p-2 border border-sky-500 bg-sky-500 text-base text-white font-bold"

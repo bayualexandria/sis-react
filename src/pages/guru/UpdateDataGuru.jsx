@@ -125,7 +125,7 @@ function UpdateDataGuru() {
   useEffect(() => {
     getDataGuruById();
     getUserById();
-  }, []);
+  }, );
 
   return (
     <Main>
@@ -210,7 +210,7 @@ function UpdateDataGuru() {
                       </label>
                       <div className="flex flex-row gap-x-5">
                         <div className="flex flex-row gap-x-3">
-                          {guru.jenis_kelamin == "Laki-laki" ? (
+                          {guru.jenis_kelamin === "Laki-laki" ? (
                             <input
                               type="radio"
                               name="jenis_kelamin"
@@ -234,7 +234,7 @@ function UpdateDataGuru() {
                           <label htmlFor="Laki-laki">Laki-laki</label>
                         </div>
                         <div className="flex flex-row gap-x-3">
-                          {guru.jenis_kelamin == "Perempuan" ? (
+                          {guru.jenis_kelamin === "Perempuan" ? (
                             <input
                               type="radio"
                               name="jenis_kelamin"

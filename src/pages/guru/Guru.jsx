@@ -5,8 +5,7 @@ import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import AddDataGuru from "./modal/AddDataGuru";
 import DeleteGuruById from "./DeleteGuruById";
-import ShowDataTrashGuru from "./trash-data/ShowDataTrashGuru";
-import ExcelExport from "../../components/laporan/excel/ExcelExport";
+
 import StatusById from "./modal/StatusById";
 import StatusUserVerified from "./modal/StatusUserVerified";
 import api from "../../utils/repositories";

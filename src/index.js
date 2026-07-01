@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* Tambahkan basename="/sis-react"{nama_folder di hatdocs} jika menggunakan Xampp */}
-    <BrowserRouter basename="/sis-react">
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>,
