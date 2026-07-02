@@ -5,6 +5,11 @@ import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import LoginViaSocialMedia from "./LoginViaSocialMedia";
+import pendidikan from "../../assets/images/pendidikan.png";
+import daun from "../../assets/logo/daun.png";
+import logo1 from "../../assets/logo/1.png";
+import logo2 from "../../assets/logo/2.png";
+import logo3 from "../../assets/logo/3.png";
 
 import api from "../../utils/repositories";
 
@@ -55,6 +60,7 @@ function Login() {
         )
         .then((res) => res.data);
       setLoading(false);
+      console.log("response", response);
 
       if (response.status === 200) {
         var date = new Date();
@@ -71,6 +77,14 @@ function Login() {
     } catch (e) {
       setLoading(false);
 
+      console.log("error", e);
+      if (e.message === "Failed to fetch" || e.message === "Network Error") {
+        return templateModal.fire({
+          icon: "error",
+          title:
+            "Koneksi ke server terputus! Mohon hubungi pihak administrator server.",
+        });
+      }
       if (e.response.data.status === 401) {
         setMessage(e.response.data.message);
         setTimeout(() => {
@@ -83,13 +97,6 @@ function Login() {
           title: `${e.response.data.message}`,
         });
       }
-      if (e.message === "Failed to fetch") {
-        return templateModal.fire({
-          icon: "error",
-          title:
-            "Koneksi ke server terputus! Mohon hubungi pihak administrator server.",
-        });
-      }
     }
   };
 
@@ -100,17 +107,46 @@ function Login() {
   return (
     <>
       {user && <Navigate to="/" replace={true} />}
-      <div className="bg-sky-500 w-full flex flex-row justify-between items-center h-auto">
-        <div className="bg-sky-500 w-8/12 flex items-center flex-col h-screen"></div>
-        <div className="bg-sky-500 w-4/12 flex items-center flex-col h-screen">
+      <div className=" w-full flex md:flex-row flex-col justify-between items-center h-auto">
+        <div className="md:w-3/5 w-full md:flex hidden items-center flex-col h-screen">
+          <div className="flex justify-center items-center h-screen ">
+            <img
+              src={pendidikan}
+              alt="logo-pendidikan-png"
+              className="w-full"
+            />
+          </div>
+          <div className="absolute center top-20">
+            <h1 className="text-2xl font-bold text-sky-500">
+              Selamat Datang di Sistem Informasi Sekolah
+            </h1>
+          </div>
+          <div className="absolute top-5 left-5 right-0">
+            <div className="justify-center flex items-center w-16 h-16 rounded-full shadow-md border-gray-500 p-2 border-1.5">
+              <img src={logo} alt="logo-pendidikan" className="w-16" />
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-10 ">
+            <img src={daun} alt="logo-pendidikan" className="w-16" />
+          </div>
+          <div className="absolute bottom-0 left-[50rem]">
+            <img src={daun} alt="logo-pendidikan" className="w-16" />
+          </div>
+          <div className="absolute bottom-0 left-30">
+            <img src={logo1} alt="logo-pendidikan" className="w-16" />
+          </div>
+          <div className="absolute bottom-[10rem] left-[22rem]">
+            <img src={logo2} alt="logo-pendidikan" className="w-12" />
+          </div>
+          <div className="absolute bottom-[10rem] left-[35rem]">
+            <img src={logo3} alt="logo-pendidikan" className="w-20" />
+          </div>
+        </div>
+        <div className="bg-sky-500 md:w-2/5 w-full flex items-center flex-col h-screen px-24">
           <h1 className="font-bold text-white text-2xl ">
             Sistem Informasi Sekolah
           </h1>
-          <div className="md:w-1/2 w-full rounded-md shadow-lg bg-white px-7 pt-3 pb-10 mt-10 gap-y-5 flex flex-col">
-            <div className="flex w-full justify-center">
-              <img src={logo} alt="logo-pendidikan" className="w-20" />
-            </div>
-
+          <div className="w-full rounded-md shadow-lg bg-white px-7 pt-3 pb-10 mt-10 gap-y-5 flex flex-col">
             <form onSubmit={onHandlerSubmit} className="flex flex-col gap-y-5">
               <div className="flex flex-col gap-y-3">
                 <label
