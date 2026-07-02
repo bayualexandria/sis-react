@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.split-char {
+  color: var(--hex-current-1);
+  background-color: var(--hex-current-3);
+  outline: 1px solid var(--hex-current-2);
+  border-radius: .25rem;
+}

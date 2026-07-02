@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import logo from "../../assets/images/logo-pendidikan.png";
 import { Link, Navigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -12,6 +12,7 @@ import logo2 from "../../assets/logo/2.png";
 import logo3 from "../../assets/logo/3.png";
 
 import api from "../../utils/repositories";
+import { animate, splitText, spring, stagger, waapi } from "animejs";
 
 const templateModal = withReactContent(Swal).mixin({
   customClass: {
@@ -38,6 +39,7 @@ function Login() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const boxRef = useRef(null);
 
   const [user, setuser] = useState(false);
 
@@ -104,19 +106,32 @@ function Login() {
     setShow(!show);
   };
 
+  useEffect(() => {
+    splitText("h1", {
+      chars: { class: "split-char" },
+    });
+
+    animate(".split-char", {
+      y: ["0rem", "-1rem", "0rem"],
+      loop: true,
+      delay: stagger(100),
+    });
+   
+  }, []);
+
   return (
     <>
       {user && <Navigate to="/" replace={true} />}
       <div className=" w-full flex md:flex-row flex-col justify-between items-center h-auto">
-        <div className="md:w-3/5 w-full md:flex hidden items-center flex-col h-screen">
-          <div className="flex justify-center items-center h-screen ">
+        <div className="md:w-3/5 w-full sm:flex hidden items-center flex-col h-screen relative">
+          <div className="flex justify-center items-center h-screen">
             <img
               src={pendidikan}
               alt="logo-pendidikan-png"
               className="w-full"
             />
           </div>
-          <div className="absolute center top-20">
+          <div className="absolute center top-20" ref={boxRef}>
             <h1 className="text-2xl font-bold text-sky-500">
               Selamat Datang di Sistem Informasi Sekolah
             </h1>
@@ -138,7 +153,7 @@ function Login() {
           <div className="absolute bottom-[10rem] left-[22rem]">
             <img src={logo2} alt="logo-pendidikan" className="w-12" />
           </div>
-          <div className="absolute bottom-[10rem] left-[35rem]">
+          <div className="absolute md:bottom-[10rem] md:left-[35rem] sm:left-[26rem] sm:bottom-[9.8rem]">
             <img src={logo3} alt="logo-pendidikan" className="w-20" />
           </div>
         </div>
