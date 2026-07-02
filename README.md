@@ -1,6 +1,6 @@
 # Aplikasi Sistem Informasi Siswa (Frontend fecth API Golang sis)
 
-Ini adalah project aplikasi frontend Sistem Informasi Siswa yang terintegrasi dengan backend API Sistem Informasi Siswa berbasis Golang.
+Ini adalah project aplikasi frontend Sistem Informasi Siswa yang terintegrasi dengan backend [API Sistem Informasi Siswa berbasis Golang](https://github.com/bayualexandria/rest-api-golang-sis).
 
 ## Available Scripts
 
