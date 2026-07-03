@@ -44,10 +44,8 @@ function LoginViaSocialMedia() {
           {
             withCredentials: true,
           },
-
         )
         .then((res) => res.data);
-
 
       setLoading(true);
       setTimeout(() => {
@@ -60,7 +58,6 @@ function LoginViaSocialMedia() {
           localStorage.setItem(
             "username",
             JSON.stringify(response.user.username),
-
           );
           localStorage.setItem(
             "id_user",
@@ -73,16 +70,28 @@ function LoginViaSocialMedia() {
         return response;
       }, 900);
     } catch (error) {
-
-      if (error.response.data.status === 403) {
+      if (
+        error.message === "Failed to fetch" ||
+        error.message === "Network Error"
+      ) {
         return templateModal.fire({
           icon: "error",
-          title: `${error.response.data.message}`,
+          title:
+            "Koneksi ke server terputus! Mohon hubungi pihak administrator server.",
+        });
+      }
+
+      if (
+        error.status === 403 ||
+        error.status === 404
+      ) {
+        return templateModal.fire({
+          icon: "error",
+          title: `${error.message}`,
         });
       }
       console.error("Error during login:", error);
       console.log("error social", "error");
-
 
       // Handle error appropriately, e.g., show a notification or redirect
     }

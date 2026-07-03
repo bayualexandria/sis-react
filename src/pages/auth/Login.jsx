@@ -112,11 +112,85 @@ function Login() {
     });
 
     animate(".split-char", {
-      y: ["0rem", "-1rem", "0rem"],
+      translateY: [0, -6],
+      duration: 2500,
+      direction: "alternate",
       loop: true,
-      delay: stagger(100),
+      ease: "inOutSine",
+      delay: stagger(50),
     });
-   
+    animate(".hero-image", {
+      opacity: [0, 1],
+      scale: [0.8, 1],
+      rotate: [-3, 0],
+      duration: 1800,
+      ease: "outExpo",
+    });
+    animate(".float1", {
+      y: [0, -20],
+      duration: 3000,
+      direction: "alternate",
+      loop: true,
+      ease: "inOutSine",
+    });
+
+    animate(".float2", {
+      y: [0, -15],
+      rotate: [-5, 5],
+      duration: 4000,
+      direction: "alternate",
+      loop: true,
+    });
+
+    animate(".float3", {
+      y: [0, -25],
+      scale: [1, 1.05],
+      duration: 3500,
+      direction: "alternate",
+      loop: true,
+    });
+
+    animate(".daun1", {
+      rotate: [-5, 5],
+      duration: 2500,
+      direction: "alternate",
+      loop: true,
+    });
+
+    animate(".daun2", {
+      rotate: [5, -5],
+      duration: 3000,
+      direction: "alternate",
+      loop: true,
+    });
+    animate(".login-card", {
+      opacity: [0, 1],
+      x: [120, 0],
+      duration: 1000,
+      ease: "outExpo",
+    });
+    animate(".login-item", {
+      opacity: [0, 1],
+      y: [25, 0],
+      duration: 700,
+      delay: stagger(150),
+      ease: "outExpo",
+    });
+    animate(".login-button", {
+      scale: [0.8, 1],
+      opacity: [0, 1],
+      duration: 700,
+      delay: 1200,
+      ease: "outBack",
+    });
+
+    animate(".logo-app", {
+      scale: [1, 1.08],
+      duration: 1800,
+      direction: "alternate",
+      loop: true,
+      ease: "inOutSine",
+    });
   }, []);
 
   return (
@@ -128,7 +202,7 @@ function Login() {
             <img
               src={pendidikan}
               alt="logo-pendidikan-png"
-              className="w-full"
+              className="w-full hero-image"
             />
           </div>
           <div className="absolute center top-20" ref={boxRef}>
@@ -138,30 +212,30 @@ function Login() {
           </div>
           <div className="absolute top-5 left-5 right-0">
             <div className="justify-center flex items-center w-16 h-16 rounded-full shadow-md border-gray-500 p-2 border-1.5">
-              <img src={logo} alt="logo-pendidikan" className="w-16" />
+              <img src={logo} alt="logo-pendidikan" className="w-16 logo-app" />
             </div>
           </div>
           <div className="absolute bottom-0 left-10 ">
-            <img src={daun} alt="logo-pendidikan" className="w-16" />
+            <img src={daun} alt="logo-pendidikan" className="w-16 daun1" />
           </div>
           <div className="absolute bottom-0 left-[50rem]">
-            <img src={daun} alt="logo-pendidikan" className="w-16" />
+            <img src={daun} alt="logo-pendidikan" className="w-16 daun2" />
           </div>
           <div className="absolute bottom-0 left-30">
-            <img src={logo1} alt="logo-pendidikan" className="w-16" />
+            <img src={logo1} alt="logo-pendidikan" className="w-16 float1" />
           </div>
           <div className="absolute bottom-[10rem] left-[22rem]">
-            <img src={logo2} alt="logo-pendidikan" className="w-12" />
+            <img src={logo2} alt="logo-pendidikan" className="w-12 float2" />
           </div>
           <div className="absolute md:bottom-[10rem] md:left-[35rem] sm:left-[26rem] sm:bottom-[9.8rem]">
-            <img src={logo3} alt="logo-pendidikan" className="w-20" />
+            <img src={logo3} alt="logo-pendidikan" className="w-20 float3" />
           </div>
         </div>
         <div className="bg-sky-500 md:w-2/5 w-full flex items-center flex-col h-screen px-24">
           <h1 className="font-bold text-white text-2xl ">
             Sistem Informasi Sekolah
           </h1>
-          <div className="w-full rounded-md shadow-lg bg-white px-7 pt-3 pb-10 mt-10 gap-y-5 flex flex-col">
+          <div className="w-full login-card rounded-md shadow-lg bg-white px-7 pt-3 pb-10 mt-10 gap-y-5 flex flex-col">
             <form onSubmit={onHandlerSubmit} className="flex flex-col gap-y-5">
               <div className="flex flex-col gap-y-3">
                 <label
@@ -177,7 +251,7 @@ function Login() {
                   onChange={(e) => setUsername(e.target.value)}
                   className={`${
                     message.username ? "border-rose-500" : "border-sky-500"
-                  } border  rounded-md shadow-md p-2 text-sm outline-none`}
+                  } border  rounded-md shadow-md p-2 text-sm outline-none login-item`}
                 />
                 <div>
                   {message.username ? (
@@ -202,7 +276,7 @@ function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   className={`${
                     message.password ? "border-rose-500" : "border-sky-500"
-                  } border  rounded-md shadow-md p-2 text-base outline-none`}
+                  } border  rounded-md shadow-md p-2 text-base outline-none login-item`}
                 />
                 <div
                   onClick={showPassword}
@@ -260,7 +334,7 @@ function Login() {
               <ReCAPTCHA sitekey="6Ld1Kz8tAAAAAPwlu1XZVPrc0MDG0L8mwTupRgf8" />
               <button
                 type="submit"
-                className="rounded-full outline-none p-2 border border-sky-500 bg-sky-500 text-base text-white font-bold"
+                className="login-button rounded-full outline-none p-2 border border-sky-500 bg-sky-500 text-base text-white font-bold"
               >
                 {loading ? (
                   <div className="flex flex-row items-center justify-center gap-x-2">
